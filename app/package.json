@@ -1,0 +1,43 @@
+{
+    "name": "developersdashboard",
+    "version": "1.0.0",
+    "description": "DevelopersDashboard for KPIs",
+    "author": "Jesse Verhoeff",
+    "scripts": {
+        "test": "npm -v",
+        "start": "node public/app.js",
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production"
+    },
+    "dependencies": {
+        "@amcharts/amcharts5": "^5.1.10",
+        "axios": "^0.25",
+        "chart.js": "^3.7.1",
+        "laravel-mix": "^6.0.6",
+        "lodash": "^4.17.19",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.49.11",
+        "postcss": "^8.1.14"
+    },
+    "devDependencies": {
+        "@amcharts/amcharts5": "^5.1.10",
+        "@tailwindcss/forms": "^0.4.0",
+        "alpinejs": "^3.4.2",
+        "autoprefixer": "^10.4.2",
+        "axios": "^0.25",
+        "chart.js": "^3.7.1",
+        "laravel-mix": "^6.0.6",
+        "lodash": "^4.17.19",
+        "postcss": "^8.4.6",
+        "postcss-import": "^14.0.2",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.49.11",
+        "sass-loader": "^12.6.0",
+        "tailwindcss": "^3.0.18"
+    }
+}

@@ -1,0 +1,91 @@
+version: '3'
+
+networks:
+  laravel:
+    driver: bridge
+
+services:
+  nginx_kpi_dashboard:
+    image: nginx:stable-alpine
+    container_name: nginx_kpi_dashboard
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php_kpi_dashboard
+      - postgreSQL_kpi_dashboard
+    networks:
+      - laravel
+
+  postgreSQL_kpi_dashboard:
+    image: postgres
+    container_name: postgreSQL_kpi_dashboard
+    restart: unless-stopped
+    volumes:
+      - database-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      HOST: localhost
+      POSTGRES_USER: root_user
+      POSTGRES_PASSWORD: rootPassword
+      POSTGRES_DB: DevelopersDashboard
+      SERVICE_TAGS: dev
+      SERVICE_NAME: postgres
+    networks:
+      - laravel
+
+  pgadmin_kpi_dashboard:
+    image: dpage/pgadmin4
+    container_name: pgadmin_kpi_dashboard
+    restart: always
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - "5050:80"
+    networks:
+      - laravel
+
+  nodejs_kpi_dashboard:
+    image: node:13.7-alpine
+    container_name: nodejs_kpi_dashboard
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      - php_kpi_dashboard
+    working_dir: /var/www/html
+    networks:
+      - laravel
+
+  composer_kpi_dashboard:
+    image: composer
+    container_name: composer_kpi_dashboard
+    volumes:
+      - ./app:/var/www/html
+    command: ["composer", "install"]
+    working_dir: /var/www/html
+    networks:
+      - laravel
+
+  php_kpi_dashboard:
+    image: php:8.1-fpm-alpine
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php_kpi_dashboard
+    volumes:
+      - ./app:/var/www/html
+    networks:
+      - laravel
+
+
+volumes:
+  database-data:
+  pgadmin:
